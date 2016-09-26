@@ -473,6 +473,9 @@ anything not on this list is considered to be a truthy
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+      return _.map(collection, function (str) {
+         return functionOrKey.apply(str)
+      })
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -495,9 +498,19 @@ anything not on this list is considered to be a truthy
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    result = result || [];
+    for (var i = 0; i < nestedArray.length; i++) {
+        var currentValue = nestedArray[i]
+        if (typeof currentValue === 'number') {
+            result.push(currentValue)
+        } else {
+            _.flatten(currentValue, result);
+        }
+    }
 
-    //use recursion to solve this
-  };
+    return result;
+
+}
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
