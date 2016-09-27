@@ -93,17 +93,11 @@
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
       var results = [];
-        _.each(collection, function(el){
-            
-            if(test(el)){
-              
-              results.push(el)
-          
+        _.each(collection, function(el){         
+            if(test(el)){              
+              results.push(el)          
           }
-
-        })
-        
-      
+        })      
       return results;
   };
 
@@ -476,6 +470,8 @@ anything not on this list is considered to be a truthy
       return _.map(collection, function (str) {
          return functionOrKey.apply(str)
       })
+
+
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -515,12 +511,50 @@ anything not on this list is considered to be a truthy
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+      var first = arguments[0];
+  var second = arguments[1];
+  var shorterArray;
+  var longerArray;
+  var results = [];
+  //find shorter array
+  if(first.length < second.length){
+    shorterArray = first;
+    longerArray = second;
+  }else {
+    shorterArray = second;
+    longerArray = first;
+  }
+
+  //loop thru shorter array
+  _.each(shorterArray, function (elem) {
+    if(longerArray.includes(elem)){
+      results.push(elem);
+    }   
+  })
+  //check shorter array if longer array 
+  return results;
   };
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
-  _.difference = function(array) {
-  };
+ _.difference = function(array) {
+ var results = [];
+ var map = {}
+ var args = Array.prototype.slice.call(arguments, 1)
+
+ for(var i = 0; i < args.length; i++){
+  var subArray = args[i];
+  for(var j = 0; j < subArray.length; j++){
+    var number = subArray[j];
+    map[number] =  !map[number] ?  number : null;
+  }
+ }
+ //loop thru array and see if value exists in map// if it doesn't exist, push to results
+  return _.filter(array, function (num) {
+  var stringNum = num.toString()
+    return !map[stringNum]
+ })
+};
 
   // Returns a function, that, when invoked, will only be triggered at most once
   // during a given window of time.  See the Underbar readme for extra details
